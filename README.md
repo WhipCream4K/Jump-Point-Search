@@ -1,2 +1,2 @@
-# Jumppoint Search
- Jumppoint steering behaviour
+# Jump Point Search
+ Jump Point steering behaviour
