@@ -8,7 +8,7 @@
 class App_JumpPointSearch : public IApp
 {
 public:
-
+	
 	App_JumpPointSearch() = default;
 	virtual ~App_JumpPointSearch();
 
@@ -22,10 +22,11 @@ private:
 
 	// Grid data members
 	Elite::GridGraph<Elite::GridTerrainNode, Elite::GraphConnection>* m_pGridGraph;
+	Elite::Heuristic m_pHeuristicFunction{ Elite::HeuristicFunctions::Chebyshev };
 	Elite::EGraphEditor m_GraphEditor;
 	Elite::EGraphRenderer m_GraphRenderer;
-	static constexpr int m_Columns{50};
-	static constexpr int m_Rows{50};
+	static constexpr int m_Columns{20};
+	static constexpr int m_Rows{20};
 	static constexpr int m_CellSize{15};
 
 	bool m_IsGridDrawn{ true };
@@ -34,6 +35,7 @@ private:
 	bool m_IsConnectionCostsDrawn{};
 
 	// PathFinding data members
+	std::vector<Elite::GridTerrainNode*> m_vPath;
 	int startPathIdx{};
 	int endPathIdx{};
 	

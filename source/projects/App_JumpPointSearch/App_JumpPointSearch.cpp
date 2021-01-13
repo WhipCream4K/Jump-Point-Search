@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "App_JumpPointSearch.h"
+#include "framework/EliteAI/EliteGraphs/EliteGraphAlgorithms/EJumpPointSearch.h"
 
 App_JumpPointSearch::~App_JumpPointSearch()
 {
@@ -17,10 +18,13 @@ void App_JumpPointSearch::Start()
 		m_Rows,
 		m_CellSize,
 		false,
-		false,
+		true, // will test with diagonally enable because jump point search utilize diagonal search
 		1.0f,
-		1.5f
+		1.0f // uniform graph
 		);
+
+	startPathIdx = 10;
+	endPathIdx = 20;
 }
 
 void App_JumpPointSearch::Update(float deltaTime)
@@ -35,7 +39,7 @@ void App_JumpPointSearch::Update(float deltaTime)
 		Elite::MouseData mouseData{ INPUTMANAGER->GetMouseData(Elite::InputType::eMouseButton,Elite::InputMouseButton::eMiddle) };
 		Elite::Vector2 mousePos{ DEBUGRENDERER2D->GetActiveCamera()->ConvertScreenToWorld({float(mouseData.X),float(mouseData.Y)}) };
 
-		int clickedNode{ m_pGridGraph->GetNodeIdxAtWorldPos(mousePos) };
+		const int clickedNode{ m_pGridGraph->GetNodeIdxAtWorldPos(mousePos) };
 		if(m_IsStartNodeSelected)
 		{
 			startPathIdx = clickedNode;
@@ -55,7 +59,12 @@ void App_JumpPointSearch::Update(float deltaTime)
 	
 	// IMGUI
 	UpdateImGui();
-	
+
+	auto pathfinder{ JumpPointSearch<Elite::GridTerrainNode,Elite::GraphConnection>(m_pGridGraph,m_pHeuristicFunction,m_Columns,m_Rows) };
+	m_vPath = pathfinder.FindPath(
+		m_pGridGraph->GetNode(startPathIdx),
+		m_pGridGraph->GetNode(endPathIdx)
+	);
 }
 
 void App_JumpPointSearch::Render(float deltaTime) const
@@ -71,6 +80,13 @@ void App_JumpPointSearch::Render(float deltaTime) const
 	);
 
 	// RenderStartNode
+	if (startPathIdx != invalid_node_index)
+		m_GraphRenderer.RenderHighlightedGrid(m_pGridGraph, { m_pGridGraph->GetNode(startPathIdx) }, START_NODE_COLOR);
+	if (endPathIdx != invalid_node_index)
+		m_GraphRenderer.RenderHighlightedGrid(m_pGridGraph, { m_pGridGraph->GetNode(endPathIdx) }, END_NODE_COLOR);
+
+	if (!m_vPath.empty())
+		m_GraphRenderer.RenderHighlightedGrid(m_pGridGraph, m_vPath, Elite::Color{ 0.0f,0.0f,1.0f });
 }
 
 void App_JumpPointSearch::UpdateImGui()
