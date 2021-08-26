@@ -28,7 +28,7 @@ void App_CombinedSteering::Start()
 		{ m_pWander,0.5f },
 		{ m_pSeek,0.5f }	
 	});
-
+	
 	m_pDrunkSeekAgent->SetSteeringBehavior(m_pBlendSteering);
 	m_pDrunkSeekAgent->SetAutoOrient(true);
 	m_pDrunkSeekAgent->SetMass(1.0f);

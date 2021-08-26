@@ -4,6 +4,7 @@
 #include "framework/EliteAI/EliteGraphs/EGridGraph.h"
 #include "framework\EliteAI\EliteGraphs\EliteGraphUtilities\EGraphEditor.h"
 #include "framework\EliteAI\EliteGraphs\EliteGraphUtilities\EGraphRenderer.h"
+#include "projects/Helpers.h"
 
 class App_JumpPointSearch : public IApp
 {
@@ -29,6 +30,7 @@ private:
 	static constexpr int m_Rows{20};
 	static constexpr int m_CellSize{15};
 
+	int m_SelectedHeuristic{4};
 	bool m_IsGridDrawn{ true };
 	bool m_IsNodeNumbersDrawn{};
 	bool m_IsConnectionsDrawn{};
@@ -36,12 +38,14 @@ private:
 
 	// PathFinding data members
 	std::vector<Elite::GridTerrainNode*> m_vPath;
+	std::vector<NodeForRender> m_JumpPoints;
 	int startPathIdx{};
 	int endPathIdx{};
 	
 	// Interface
 	bool m_IsStartNodeSelected{};
-
+	bool m_ShowDebugOptions{};
+	bool m_ShowJumpPoints{};
 	
 	bool m_ShouldUpdatePath{};
 	

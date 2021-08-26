@@ -17,3 +17,9 @@ struct NodeForRender
 		return costSoFar == other.costSoFar || fCost == other.fCost;
 	}
 };
+
+struct SearchDirection
+{
+	int nodeIdx{};
+	Elite::Vector2 direction{};
+};

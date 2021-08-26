@@ -12,6 +12,9 @@
 #ifdef JumpPointSearch
 #include "projects/App_JumpPointSearch/App_JumpPointSearch.h"
 #endif
+#ifdef AStar
+#include "projects/App_PathfindingAStar/App_PathfindingAStar.h"
+#endif
 
 //Hotfix for genetic algorithms project
 bool gRequestShutdown = false;
@@ -67,7 +70,9 @@ int main(int argc, char* argv[])
 #ifdef JumpPointSearch
 		myApp = new App_JumpPointSearch();
 #endif
-		
+#ifdef AStar
+		myApp = new App_PathfindingAStar();
+#endif
 		ELITE_ASSERT(myApp, "Application has not been created.");
 
 		//Boot application
